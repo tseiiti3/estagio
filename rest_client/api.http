@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:8000
 
-@body = { "username": "teste", "password": "123"}
+@body = { "username": "teste4", "password": "123"}
 # @body = { "username": "bbb", "password": "bbb"}
 
 ### GET TOKEN ACCESS AND REFRESH
@@ -14,6 +14,6 @@ Content-Type: application/json
 ### GET NOTES
 @token = {{ login.response.body.access }}
 
-GET {{ baseUrl }}/api/notes/
+GET {{ baseUrl }}/api/user/data/
 Authorization: Bearer {{ token }}
 
