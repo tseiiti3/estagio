@@ -34,19 +34,20 @@ ALLOWED_HOSTS = []
 
 # Application definition
 DJANGO_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "whitenoise.runserver_nostatic",
 ]
 THIRD_PARTY_APPS = [
-    'corsheaders',
-    'rest_framework',
+    "corsheaders",
+    "rest_framework",
 ]
 LOCAL_APPS = [
+    "users",
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -87,13 +88,13 @@ WSGI_APPLICATION = "ap.wsgi.app"
 
 if os.getenv("POSTGRES_HOST"):
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv("POSTGRES_DATABASE"),
-            'USER': os.getenv("POSTGRES_USER"),
-            'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
-            'HOST': os.getenv("POSTGRES_HOST"),
-            'PORT': os.getenv("POSTGRES_DB_PORT") or 5432,
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DATABASE"),
+            "USER": os.getenv("POSTGRES_USER"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+            "HOST": os.getenv("POSTGRES_HOST"),
+            "PORT": os.getenv("POSTGRES_DB_PORT") or 5432,
         },
     }
 else:
@@ -109,10 +110,10 @@ else:
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    { 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
-    { 'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
-    { 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
-    { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },
+    { "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    { "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    { "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    { "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 
@@ -128,7 +129,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static") ]
 STATIC_ROOT = os.path.join(BASE_DIR, "statics")
 
