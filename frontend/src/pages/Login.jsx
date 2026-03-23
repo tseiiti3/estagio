@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { REFRESH_TOKEN, ACCESS_TOKEN } from '../constants';
 import { Church, ShieldCheck, Lock, AlertCircle, UserPlus } from 'lucide-react';
@@ -9,6 +9,7 @@ const Login = () => {
   const [ password, setPassword ] = useState('');
   const [ error, setError ] = useState('');
   const [ isSubmitting, setIsSubmitting ] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ const Login = () => {
       localStorage.setItem(ACCESS_TOKEN, res.data.access);
       localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
 
-      return <Navigate to="/" />;
+      return navigate("/");
     } catch (err) {
       setError(err.message || 'Erro ao processar solicitação');
     } finally {
@@ -96,7 +97,8 @@ const Login = () => {
             {isSubmitting ? (
               <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
-              <><ShieldCheck size={18} />
+              <>
+                <ShieldCheck size={18} />
                 Entrar no Sistema
               </>
             )}
@@ -105,8 +107,7 @@ const Login = () => {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => {
-            }}
+            onClick={() => navigate('/register')}
             className="text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
           >
             Não tem conta? Cadastre-se como Visitante.

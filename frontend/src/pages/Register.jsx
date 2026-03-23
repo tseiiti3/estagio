@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import { REFRESH_TOKEN, ACCESS_TOKEN } from '../constants';
-import { Church, ShieldCheck, Lock, AlertCircle, UserPlus } from 'lucide-react';
+import { AlertCircle, Calendar, Church, Lock, Mail, ShieldCheck, User, UserCircle, UserPlus } from 'lucide-react';
 
-const Login = () => {
+const Register = () => {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ first_name, setFirstName ] = useState('');
+  const [ last_name, setLastName ] = useState('');
+  const [ birthDate, setBirthDate ] = useState('');
   const [ error, setError ] = useState('');
   const [ isSubmitting, setIsSubmitting ] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,12 +20,8 @@ const Login = () => {
     setError('');
 
     try {
-      const res = await api.post('/api/token/', { username, password });
-      
-      localStorage.setItem(ACCESS_TOKEN, res.data.access);
-      localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-
-      return <Navigate to="/" />;
+      await api.post('/api/user/register/', { username, password, email, first_name, last_name });
+      return navigate("/login");
     } catch (err) {
       setError(err.message || 'Erro ao processar solicitação');
     } finally {
@@ -50,6 +50,82 @@ const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">
+                Nome
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <User size={16} />
+                </div>
+                <input
+                  type="text"
+                  value={first_name}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm"
+                  placeholder="Nome"
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">
+                Sobrenome
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                  <UserCircle size={16} />
+                </div>
+                <input
+                  type="text"
+                  value={last_name}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm"
+                  placeholder="Sobrenome"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">
+              Email
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Mail size={16} />
+              </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm"
+                placeholder="seu@email.com"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">
+              Data de Nascimento
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Calendar size={16} />
+              </div>
+              <input
+                type="date"
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all text-sm"
+                required
+              />
+            </div>
+          </div>
+          
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1.5 ml-1">
               Usuário
@@ -96,7 +172,8 @@ const Login = () => {
             {isSubmitting ? (
               <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             ) : (
-              <><ShieldCheck size={18} />
+              <>
+              <ShieldCheck size={18} />
                 Entrar no Sistema
               </>
             )}
@@ -105,11 +182,10 @@ const Login = () => {
 
         <div className="mt-6 text-center">
           <button
-            onClick={() => {
-            }}
+            onClick={() => navigate("/login")}
             className="text-sm font-medium text-violet-600 hover:text-violet-700 transition-colors"
           >
-            Não tem conta? Cadastre-se como Visitante.
+            Já tem uma conta? Entre aqui.
           </button>
         </div>
       </div>
@@ -121,4 +197,4 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default Register;

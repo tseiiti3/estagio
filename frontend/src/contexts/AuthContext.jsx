@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import api from '../api';
+import { ACCESS_TOKEN } from "../constants";
 
 const AuthContext = createContext(undefined);
 
@@ -8,41 +10,51 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    const savedUser = localStorage.getItem('church_auth_user');
-    const savedProfile = localStorage.getItem('church_auth_profile');
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem(ACCESS_TOKEN);
+        await fetch('http://localhost:8000/api/user/data/', {
+          method: 'GET',    
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          console.log(response.json());
+        });
+        // console.log('Success:', response.body);
+        // const result = await response.json();
+        // setUser(result);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
     
-    if (savedUser && savedProfile) {
-      setUser(JSON.parse(savedUser));
-      setProfile(JSON.parse(savedProfile));
-    }
-    setLoading(false);
+    // try {
+    //   const res = await api.get('/api/user/data/');
+    //   setUser(res.data);
+    //   console.log(res.data);
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   setLoading(false);
+    // }
   }, []);
 
-  const login = async (username, password) => {
-    setUser(mockUser);
-    setProfile(mockProfile);
-    localStorage.setItem('church_auth_user', JSON.stringify(mockUser));
-    localStorage.setItem('church_auth_profile', JSON.stringify(mockProfile));
-  };
-
-  const register = async (userData) => {
-    await login(userData.username, userData.password);
-    return newUser;
-  };
-
-  const logout = async () => {
-    setUser(null);
-    setProfile(null);
-    localStorage.removeItem('church_auth_user');
-    localStorage.removeItem('church_auth_profile');
-  };
-
-
-  const isAdmin = profile?.role === 'admin';
-
   return (
-    <AuthContext.Provider value={{ user, profile, loading, isAdmin, login, logout, register }}>
+    <AuthContext.Provider value={{ user, profile, loading }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
