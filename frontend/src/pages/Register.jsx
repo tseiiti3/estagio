@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api';
+import { useAuth } from '../contexts/AuthContext';
 import { AlertCircle, Calendar, Church, Lock, Mail, ShieldCheck, User, UserCircle, UserPlus } from 'lucide-react';
+import api from '../api';
 
 const Register = () => {
   const [ username, setUsername ] = useState('');
@@ -12,7 +13,14 @@ const Register = () => {
   const [ birthDate, setBirthDate ] = useState('');
   const [ error, setError ] = useState('');
   const [ isSubmitting, setIsSubmitting ] = useState(false);
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setUsername(user.username);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

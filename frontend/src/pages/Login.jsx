@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api';
 import { REFRESH_TOKEN, ACCESS_TOKEN } from '../constants';
 import { Church, ShieldCheck, Lock, AlertCircle, UserPlus } from 'lucide-react';
+import api from '../api';
 
 const Login = () => {
   const [ username, setUsername ] = useState('');
@@ -10,6 +10,8 @@ const Login = () => {
   const [ error, setError ] = useState('');
   const [ isSubmitting, setIsSubmitting ] = useState(false);
   const navigate = useNavigate();
+
+  // const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleSubmit = async (e) => {
     e.preventDefault();

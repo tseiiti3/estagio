@@ -1,27 +1,31 @@
-import { useState, useEffect } from "react"
-import api from "../api"
-import { useAuth } from '../contexts/context';
+import { useAuth } from '../contexts/AuthContext';
+// import { useEffect, useState } from 'react';
+// import api from "../api";
 
 const Home = () => {
-  // const [ user, setUser ] = useState([])
+  const { user } = useAuth();
+  // const [user, setUser] = useState(null);
 
   // useEffect(() => {
-  //   getUser ()
-  // }, [])
-
-  // const getUser = () => {
-  //   api
-  //     .get("/api/user/data/")
-  //     .then((res) => res.data)
-  //     .then((data) => { setUser(data); console.log(data) })
-  //     .catch((err) => alert(err))
-  // }
+  //   for (let i = 0; i < 1; i++) {
+  //     if (user) break;
+  //     api.get("/api/user/data/")
+  //       .then(res  => res.data)
+  //       .then(data => setUser(data))
+  //       .catch(err => {});
+  //     console.log(user);
+  //   }
+  // }, []);
   
-  const { user } = useAuth();
-  // const { user } = null; 
   
-  return <div>Home
+  return <div>
+    <h1>Home</h1>
     <p className="font-bold text-sm truncate">{ user?.username || 'Usuário' }</p>
+    <p className="font-bold text-sm truncate">{ user?.first_name || 'first_name' }</p>
+    <p className="font-bold text-sm truncate">{ user?.last_name || 'last_name' }</p>
+    <p className="font-bold text-sm truncate">{ user?.email || 'email' }</p>
+    <p className="font-bold text-sm truncate">{ user?.groups || 'groups' }</p>
+    <a href="/logout">Sair</a>
   </div>
 };
 

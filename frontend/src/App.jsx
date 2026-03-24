@@ -4,7 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './contexts/context';
+import { AuthProvider } from './contexts/AuthContext';
 
 const Logout = () => {
   localStorage.clear()
@@ -22,15 +22,13 @@ export default function App() {
               <ProtectedRoute>
                 <Home />
               </ProtectedRoute>
-            }
-          />
+            } />
+          <Route path="/register" element={ <Register /> } />
           <Route path="/login" element={ <Login /> } />
           <Route path="/logout" element={ <Logout /> } />
-          <Route path="/register" element={ <Register /> } />
           <Route path="*" element={ <NotFound /> } />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
   )
 }
-
